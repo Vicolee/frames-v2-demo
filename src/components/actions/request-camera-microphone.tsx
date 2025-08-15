@@ -104,29 +104,20 @@ export function RequestCameraMicrophoneAction() {
       setResult(undefined);
 
       if (mode === "camera") {
-        // Simple camera access using getUserMedia
-        const constraints: MediaStreamConstraints = {
-          video: {
-            width: { ideal: 640 },
-            height: { ideal: 480 },
-            facingMode: "user"
-          },
-          audio: false
-        };
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: { width: 640, height: 480 },
+          audio: false,
+        });
 
-        const stream = await navigator.mediaDevices.getUserMedia(constraints);
         streamRef.current = stream;
 
         if (videoRef.current) {
-          const videoEl = videoRef.current;
-          videoEl.srcObject = stream;
-          videoEl.muted = true;
-          videoEl.playsInline = true;
-          videoEl.autoplay = true;
-          
-          // Wait for video to start playing
-          videoEl.onloadedmetadata = () => {
-            videoEl.play().catch(console.error);
+          videoRef.current.srcObject = stream;
+
+          videoRef.current.onloadedmetadata = () => {
+            if (videoRef.current) {
+              videoRef.current.play();
+            }
           };
         }
         
@@ -267,16 +258,18 @@ export function RequestCameraMicrophoneAction() {
 
       {/* Live preview / meter */}
       {isCapturing && mode === "camera" && (
-        <div className="rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700">
-          <video 
-            ref={videoRef} 
-            className="w-full h-64 bg-black" 
-            playsInline 
-            muted 
+        <div style={{ width: "100%", height: "400px", backgroundColor: "black", borderRadius: "8px", overflow: "hidden" }}>
+          <video
+            ref={videoRef}
             autoPlay
-            onLoadedMetadata={() => console.log("JSX: Video metadata loaded")}
-            onPlay={() => console.log("JSX: Video started playing")}
-            onError={(e) => console.error("JSX: Video error:", e)}
+            playsInline
+            muted
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              transform: "scaleX(-1)",
+            }}
           />
         </div>
       )}
