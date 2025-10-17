@@ -4,7 +4,7 @@ import { useEffect } from "react";
 
 export default function ErudaProvider() {
   useEffect(() => {
-        import("eruda").then((eruda) => {
+    import("eruda").then((eruda) => {
       if (!window.eruda) {
         window.eruda = eruda.default;
         const erudaInstance = eruda.default as {

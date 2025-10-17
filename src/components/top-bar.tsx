@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
+import Image from "next/image";
 import { useFrameContext } from "~/components/providers/frame-provider";
 import { sdk } from "@farcaster/miniapp-sdk";
 
@@ -19,9 +20,11 @@ export function TopBar() {
 
   return (
     <div className="mb-6 mt-3 flex items-center justify-between">
-      <img 
+      <Image 
         src="/base-logo.png" 
         alt="Base" 
+        width={120}
+        height={32}
         className="h-8 object-contain"
       />
       
@@ -30,9 +33,11 @@ export function TopBar() {
           onClick={handleProfileClick}
           className="flex-shrink-0"
         >
-          <img
+          <Image
             src={userPfp as string}
             alt="Profile"
+            width={32}
+            height={32}
             className="h-8 w-8 rounded-full object-cover"
           />
         </button>
