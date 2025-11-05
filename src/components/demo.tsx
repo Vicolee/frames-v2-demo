@@ -16,7 +16,6 @@ import { SwapTokenAction } from "~/components/actions/swap-token";
 import { SendTokenAction } from "~/components/actions/send-token";
 import { ViewCastAction } from "~/components/actions/view-cast";
 import { ComposeCastAction } from "~/components/actions/compose-cast";
-import { SetPrimaryButtonAction } from "~/components/actions/set-primary-button";
 import { AddMiniAppAction } from "~/components/actions/add-miniapp";
 import { CloseMiniAppAction } from "~/components/actions/close-miniapp";
 import { SignSiweMessage, SwitchChain } from "~/components/wallet/wallet-actions";
@@ -79,7 +78,6 @@ export default function Demo() {
     { id: "sendtoken", name: "Send Token", description: "Send tokens to users", component: SendTokenAction, icon: Send },
     { id: "viewcast", name: "View Cast", description: "Display Farcaster casts", component: ViewCastAction, icon: Eye },
     { id: "composecast", name: "Compose Cast", description: "Create new casts", component: ComposeCastAction, icon: Edit },
-    { id: "setprimarybutton", name: "Set Primary Button", description: "Configure primary button", component: SetPrimaryButtonAction, icon: Settings },
     { id: "haptics", name: "Haptics", description: "Trigger haptic feedback", component: HapticsAction, icon: Phone },
     ...(hasCamMicFeature
       ? [{ id: "requestcameramicrophone", name: "Camera & Microphone", description: "Request access and demo camera/mic", component: RequestCameraMicrophoneAction, icon: Camera } satisfies ActionDefinition]

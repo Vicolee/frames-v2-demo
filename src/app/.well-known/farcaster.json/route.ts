@@ -33,7 +33,6 @@ export async function GET() {
           "actions.viewToken", 
           "actions.composeCast",
           "actions.viewProfile",
-          "actions.setPrimaryButton",
           "actions.swapToken",
           "actions.close",
           "actions.viewCast",
