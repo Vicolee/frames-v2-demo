@@ -9,14 +9,16 @@ This is a [NextJS](https://nextjs.org/) + TypeScript + React app.
 To install dependencies:
 
 ```bash
-$ yarn
+$ bun install
 ```
 
 To run the app:
 
 ```bash
-$ yarn dev
+$ bun dev
 ```
+
+> Note: This project uses Bun by default but you can use npm, yarn, or pnpm if you prefer.
 
 To test your mini app in Farcaster's playground or in Base App, you'll want to use a tunneling tool like [ngrok](https://ngrok.com/)
 
