@@ -1,11 +1,10 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import React, { useState, useEffect } from "react";
 import { useFrameContext } from "~/components/providers/frame-provider";
 import { sdk } from "@farcaster/miniapp-sdk";
 import { useAccount } from "wagmi";
-import { Settings, LogIn, FastArrowRight, OpenInBrowser, Link, ProfileCircle, Coins, ArrowUp, Send, Eye, Edit, Plus, Xmark, Terminal, Camera, Phone } from "iconoir-react";
+import { Settings, LogIn, FastArrowRight, OpenInBrowser, Link, ProfileCircle, Coins, ArrowUp, Send, Eye, Edit, Plus, Xmark, Terminal, Camera, Phone, EditPencil } from "iconoir-react";
 import { SignInAction } from "~/components/actions/signin";
 import { QuickAuthAction } from "~/components/actions/quick-auth";
 import { OpenMiniAppAction } from "~/components/actions/open-miniapp";
@@ -20,6 +19,7 @@ import { AddMiniAppAction } from "~/components/actions/add-miniapp";
 import { CloseMiniAppAction } from "~/components/actions/close-miniapp";
 import { SignSiweMessage, SwitchChain } from "~/components/wallet/wallet-actions";
 import { BasePay } from "~/components/wallet/base-pay";
+import { SignManifest } from "~/components/wallet/sign-manifest";
 import { RequestCameraMicrophoneAction } from "~/components/actions/request-camera-microphone";
 import { HapticsAction } from "~/components/actions/haptics";
 import { TopBar } from "~/components/top-bar";
@@ -44,7 +44,7 @@ const WalletActionsComponent = () => (
 );
 
 export default function Demo() {
-  const frameContext = useFrameContext();
+  const { client } = useFrameContext();
   const { isConnected } = useAccount();
   const [activeTab, setActiveTab] = useState<TabType>("actions");
   const [currentActionPage, setCurrentActionPage] = useState<ActionPageType>("list");
@@ -90,6 +90,7 @@ export default function Demo() {
   const walletActionDefinitions: WalletActionDefinition[] = [
     { id: "basepay", name: "Base Pay", description: "Debug Base Pay", component: BasePay, icon: Coins },
     { id: "wallet", name: "Wallet", description: "Debug wallet interactions", component: WalletActionsComponent, icon: Settings },
+    { id: "signmanifest", name: "(Experimental) Sign Manifest", description: "Sign JFS manifest for domain verification", component: SignManifest, icon: EditPencil },
   ];
 
   const handleTabChange = async (tab: TabType) => {
@@ -147,12 +148,9 @@ export default function Demo() {
 
   return (
     <div style={{ 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      marginTop: (frameContext?.context as any)?.client?.safeAreaInsets?.top ?? 0,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      marginLeft: (frameContext?.context as any)?.client?.safeAreaInsets?.left ?? 0,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      marginRight: (frameContext?.context as any)?.client?.safeAreaInsets?.right ?? 0,
+      marginTop: client?.safeAreaInsets?.top ?? 0,
+      marginLeft: client?.safeAreaInsets?.left ?? 0,
+      marginRight: client?.safeAreaInsets?.right ?? 0,
     }}>
       <div className="w-full max-w-lg mx-auto">
         <div className="px-4 py-4">

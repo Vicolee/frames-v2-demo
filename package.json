@@ -12,6 +12,7 @@
     "@base-org/account": "^2.5.0",
     "@base-org/account-ui": "^1.0.1",
     "@farcaster/auth-kit": "^0.8.1",
+    "@farcaster/jfs": "^0.2.1",
     "@farcaster/miniapp-core": "^0.4.1",
     "@farcaster/miniapp-node": "^0.1.11",
     "@farcaster/miniapp-sdk": "^0.2.1",

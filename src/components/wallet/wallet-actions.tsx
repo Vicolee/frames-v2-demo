@@ -143,23 +143,6 @@ export function SignSiweMessage() {
     signMessage({ message: message.prepareMessage() });
   };
 
-  const handleSignSiweInvalidDomain = () => {
-    if (!address || !chain) return;
-
-    setVerifyResult(null);
-    const message = new SiweMessage({
-      domain: "https://frames-v2-demo-lilac.vercel.app",
-      address,
-      statement: "Sign in with Ethereum to this mini app.",
-      uri: window.location.origin,
-      version: "1",
-      chainId: chain.id,
-      nonce: generateSiweNonce(),
-    });
-
-    setLastMessage(message);
-    signMessage({ message: message.prepareMessage() });
-  };
 
   return (
     <div className="space-y-3">
@@ -171,14 +154,6 @@ export function SignSiweMessage() {
         {isPending ? "Signing..." : "Sign SIWE Message"}
       </Button>
 
-      <Button
-        onClick={handleSignSiweInvalidDomain}
-        disabled={isPending || !address || !chain}
-        variant="outline"
-        className="w-full"
-      >
-        {isPending ? "Signing..." : "Sign SIWE (Invalid Domain Demo)"}
-      </Button>
 
       {signature && (
         <div className="mt-3 space-y-2">

@@ -5,7 +5,7 @@ import { Typography } from "@worldcoin/mini-apps-ui-kit-react";
 import { useFrameContext } from "~/components/providers/frame-provider";
 
 export function ContextView() {
-  const frameContext = useFrameContext();
+  const { rawContext, isInMiniApp } = useFrameContext();
   const [isFullObjectOpen, setIsFullObjectOpen] = useState<boolean>(false);
 
   const toggleFullObject = (): void => {
@@ -32,7 +32,7 @@ export function ContextView() {
         {isFullObjectOpen && (
           <div className="p-4 mt-2 bg-white border border-border rounded-lg">
             <pre className="font-mono text-xs whitespace-pre-wrap break-words max-w-[310px] overflow-x-auto text-primary">
-              {frameContext?.context ? JSON.stringify(frameContext.context, null, 2) : 'null'}
+              {rawContext ? JSON.stringify(rawContext, null, 2) : 'null'}
             </pre>
           </div>
         )}
@@ -41,14 +41,14 @@ export function ContextView() {
         <Typography variant="heading" className="font-semibold text-foreground mb-3">isInMiniApp</Typography>
         <div className="p-4 bg-white border border-border rounded-lg">
           <span className="font-mono text-sm text-primary font-medium">
-            {frameContext ? (frameContext.isInMiniApp ?? false).toString() : 'false'}
+            {isInMiniApp.toString()}
           </span>
         </div>
       </div>
 
-      {frameContext?.context && (
+      {rawContext && (
         <div className="space-y-3">
-          {Object.entries(frameContext.context as Record<string, unknown>).map(([key, value]) => (
+          {Object.entries(rawContext as Record<string, unknown>).map(([key, value]) => (
             <div key={key}>
               <Typography variant="subtitle" className="font-semibold text-sm mb-2 text-foreground">{key}</Typography>
               <div className="p-3 bg-white border border-border rounded-lg">

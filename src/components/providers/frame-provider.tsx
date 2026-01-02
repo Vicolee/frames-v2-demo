@@ -3,14 +3,14 @@
 import { sdk } from "@farcaster/miniapp-sdk";
 import { createContext, useContext, useEffect, useState } from "react";
 
-interface SafeAreaInsets {
+export interface SafeAreaInsets {
   top: number;
   bottom: number;
   left: number;
   right: number;
 }
 
-interface MiniAppClient {
+export interface MiniAppClient {
   platformType?: 'web' | 'mobile';
   clientFid: number;
   added: boolean;
@@ -21,28 +21,51 @@ interface MiniAppClient {
   };
 }
 
-interface MiniAppContext {
-  user: {
-    fid: number;
-    username?: string;
-    displayName?: string;
-    pfpUrl?: string;
-  };
+export interface MiniAppUser {
+  fid: number;
+  username?: string;
+  displayName?: string;
+  pfpUrl?: string;
+}
+
+export interface MiniAppContext {
+  user: MiniAppUser;
   location?: Record<string, unknown>;
   client: MiniAppClient;
 }
 
-type FrameContextType = {
-  context: MiniAppContext | Record<string, unknown> | null;
+export type FrameContextType = {
+  /** Typed user object - null if not in mini app or failed to load */
+  user: MiniAppUser | null;
+  /** Typed client object - null if not in mini app or failed to load */
+  client: MiniAppClient | null;
+  /** Whether we're running inside a Farcaster mini app */
   isInMiniApp: boolean;
-} | null;
+  /** Raw context for anything not covered by typed fields */
+  rawContext: MiniAppContext | Record<string, unknown> | null;
+};
 
-const FrameContext = createContext<FrameContextType>(null);
+// Helper to check if raw context is a valid MiniAppContext
+function isMiniAppContext(context: unknown): context is MiniAppContext {
+  return context !== null && 
+    typeof context === 'object' && 
+    'user' in context && 
+    typeof (context as MiniAppContext).user?.fid === 'number';
+}
+
+const defaultContext: FrameContextType = {
+  user: null,
+  client: null,
+  isInMiniApp: false,
+  rawContext: null,
+};
+
+const FrameContext = createContext<FrameContextType>(defaultContext);
 
 export const useFrameContext = () => useContext(FrameContext);
 
 export default function FrameProvider({ children }: { children: React.ReactNode }){
-  const [frameContext, setFrameContext] = useState<FrameContextType>(null);
+  const [frameContext, setFrameContext] = useState<FrameContextType>(defaultContext);
 
   useEffect(() => {
     const init = async () => {
@@ -52,12 +75,30 @@ export default function FrameProvider({ children }: { children: React.ReactNode 
         await new Promise(resolve => setTimeout(resolve, 100));
         
         const isInMiniApp = await sdk.isInMiniApp();
-        setFrameContext({ context, isInMiniApp });
+        
+        // Extract typed values if context is valid
+        if (isMiniAppContext(context)) {
+          setFrameContext({
+            user: context.user,
+            client: context.client,
+            isInMiniApp,
+            rawContext: context,
+          });
+        } else {
+          setFrameContext({
+            user: null,
+            client: null,
+            isInMiniApp,
+            rawContext: context,
+          });
+        }
         
       } catch {
         setFrameContext({ 
-          context: { error: 'Failed to initialize' }, 
-          isInMiniApp: false 
+          user: null,
+          client: null,
+          isInMiniApp: false,
+          rawContext: { error: 'Failed to initialize' },
         });
       }
     }

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import Image from "next/image";
@@ -6,17 +5,13 @@ import { useFrameContext } from "~/components/providers/frame-provider";
 import { sdk } from "@farcaster/miniapp-sdk";
 
 export function TopBar() {
-  const frameContext = useFrameContext();
+  const { user } = useFrameContext();
 
   const handleProfileClick = () => {
-    if (frameContext?.context && (frameContext.context as any)?.user?.fid) {
-      sdk.actions.viewProfile({ fid: (frameContext.context as any).user.fid });
+    if (user?.fid) {
+      sdk.actions.viewProfile({ fid: user.fid });
     }
   };
-
-  const userPfp = frameContext?.context && (frameContext.context as any)?.user?.pfpUrl 
-    ? (frameContext.context as any).user.pfpUrl 
-    : undefined;
 
   return (
     <div className="mb-6 mt-3 flex items-center justify-between">
@@ -28,13 +23,13 @@ export function TopBar() {
         className="h-8 object-contain"
       />
       
-      {userPfp && (
+      {user?.pfpUrl && (
         <button
           onClick={handleProfileClick}
           className="flex-shrink-0"
         >
           <Image
-            src={userPfp as string}
+            src={user.pfpUrl}
             alt="Profile"
             width={32}
             height={32}
