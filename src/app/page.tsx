@@ -30,6 +30,7 @@ export async function generateMetadata(): Promise<Metadata> {
       siteName: METADATA.name
     },
     other: {
+      "base:app_id": "689660064e177e29024ef620",
       "fc:frame": JSON.stringify(frame),
       "fc:miniapp": JSON.stringify(frame),
     }
