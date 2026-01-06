@@ -10,6 +10,20 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  async redirects() {
+    return [
+      {
+        source: '/redirect-true',
+        destination: 'cbwallet://miniapp?url=https://frames-v2-demo-lilac.vercel.app#dont-refresh',
+        permanent: false,
+      },
+      {
+        source: '/redirect-false',
+        destination: 'cbwallet://miniapp?url=https://frames-v2-demo-lilac.vercel.app',
+        permanent: false,
+      },
+    ];
+  },
   async headers() {
     return [
       {
